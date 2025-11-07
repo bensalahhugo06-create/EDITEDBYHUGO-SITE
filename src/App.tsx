@@ -403,11 +403,21 @@ function OfferCard({
 /* ========== PORTFOLIO ========== */
 
 function Portfolio() {
-  const videos = [
-  { src: "/portfolio/video-courte-style-1.mp4", label: "Vidéo courte style 1 (vertical)" },
-  { src: "/portfolio/video-courte-style-2.mp4", label: "Vidéo courte style 2 (vertical)" },
-  { src: "/portfolio/video-longue-1.mp4", label: "Vidéo longue 1 (horizontal)" },
+const videos = [
+  {
+    src: "/portfolio/video-courte-style-1.mp4",
+    label: "Vidéo courte style 1 (vertical)",
+  },
+  {
+    src: "/portfolio/video-courte-style-2.mp4",
+    label: "Vidéo courte style 2 (vertical)",
+  },
+  {
+    src: "/portfolio/video-longue-1.mp4",
+    label: "Vidéo longue 1 (horizontal)",
+  },
 ];
+
 
 
   return (

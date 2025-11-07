@@ -1,3 +1,4 @@
+import { supabase } from "./lib/supabaseClient";
 import React, { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import {
@@ -31,6 +32,17 @@ const CONTACT = {
 const BASE_URL = import.meta.env.BASE_URL || "/";
 
 export default function App() {
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  useEffect(() => {
+    if (window.location.hash === "#admin") {
+      const pwd = prompt("Mot de passe admin ?");
+      if (pwd === import.meta.env.VITE_ADMIN_PASSWORD) {
+        setIsAdmin(true);
+      }
+    }
+  }, []);
+
   return (
     <div className="min-h-screen bg-neutral-950 text-neutral-100">
       <Header />
@@ -45,6 +57,8 @@ export default function App() {
         <FAQ />
         <Blog />
         <ContactSection />
+        {/* 👇 ajoute cette ligne juste ici, avant le Footer */}
+        {isAdmin && <AdminBriefs />}
       </main>
       <Footer />
       <FloatingCTA />
@@ -52,6 +66,7 @@ export default function App() {
     </div>
   );
 }
+
 
 /* ========== HEADER ========== */
 
@@ -667,6 +682,64 @@ function Blog() {
 /* ========== CONTACT ========== */
 
 function ContactSection() {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [rushLink, setRushLink] = useState("");
+  const [brief, setBrief] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [ok, setOk] = useState(false);
+  const [error, setError] = useState("");
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setLoading(true);
+    setError("");
+    setOk(false);
+
+    try {
+      // 1) Enregistrer dans Supabase
+      const { error } = await supabase.from("briefs").insert([
+        {
+          name,
+          email,
+          rush_link: rushLink,
+          brief,
+          source: "site",
+        },
+      ]);
+      if (error) throw error;
+
+      // 2) Facultatif : ouvrir un mail pré-rempli pour toi
+      const subject = encodeURIComponent(
+        `Nouveau brief editedbyhugo - ${name || "Sans nom"}`
+      );
+      const body = encodeURIComponent(
+        [
+          `Nom / Marque : ${name}`,
+          `Email : ${email}`,
+          `Lien rushs : ${rushLink}`,
+          "",
+          "Brief :",
+          brief,
+        ].join("\n")
+      );
+      window.location.href = `mailto:${CONTACT.EMAIL}?subject=${subject}&body=${body}`;
+
+      setOk(true);
+      setName("");
+      setEmail("");
+      setRushLink("");
+      setBrief("");
+    } catch (err) {
+      console.error(err);
+      setError(
+        "Impossible d'envoyer le brief. Réessaie ou contacte-moi sur Instagram."
+      );
+    } finally {
+      setLoading(false);
+    }
+  }
+
   return (
     <section
       id="contact"
@@ -674,75 +747,84 @@ function ContactSection() {
     >
       <div className="grid grid-cols-1 gap-10 lg:grid-cols-2">
         <div className="rounded-2xl border border-neutral-800 bg-neutral-900 p-6">
-          <h2 className="text-2xl font-semibold text-white">
-            Brief rapide
-          </h2>
+          <h2 className="text-2xl font-semibold text-white">Brief rapide</h2>
           <p className="mt-2 text-sm text-neutral-400">
-            Envoie ton idée, ton lien de rushs et on voit ensemble la meilleure approche.
+            Envoie ton idée, ton lien de rushs et je centralise tout dans mon
+            espace de suivi.
           </p>
-          <form className="mt-6 grid grid-cols-1 gap-4">
+
+          <form
+            onSubmit={handleSubmit}
+            className="mt-6 grid grid-cols-1 gap-4"
+          >
             <input
               className="rounded-xl border border-neutral-800 bg-neutral-950 px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-indigo-500"
               placeholder="Nom / Marque"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
             />
             <input
               type="email"
               className="rounded-xl border border-neutral-800 bg-neutral-950 px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-indigo-500"
               placeholder="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
             />
             <input
               className="rounded-xl border border-neutral-800 bg-neutral-950 px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-indigo-500"
               placeholder="Lien vers tes rushs (Drive / Wetransfer)"
+              value={rushLink}
+              onChange={(e) => setRushLink(e.target.value)}
             />
             <textarea
               className="min-h-[120px] rounded-xl border border-neutral-800 bg-neutral-950 px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-indigo-500"
               placeholder="Brief (format, durée, style, objectif, deadline)"
+              value={brief}
+              onChange={(e) => setBrief(e.target.value)}
             />
+
+            {error && (
+              <p className="text-xs text-red-400">{error}</p>
+            )}
+            {ok && (
+              <p className="text-xs text-emerald-400">
+                Brief bien envoyé, je reviens vers toi rapidement.
+              </p>
+            )}
+
             <div className="flex flex-wrap items-center gap-3">
+              <button
+                type="submit"
+                disabled={loading}
+                className="inline-flex items-center gap-2 rounded-xl bg-indigo-500 px-5 py-3 text-sm font-semibold text-white hover:bg-indigo-400 disabled:opacity-60"
+              >
+                {loading ? "Envoi..." : "Envoyer le brief"}
+                <Mail className="h-4 w-4" />
+              </button>
               <a
                 href={LINKS.INSTAGRAM}
                 target="_blank"
                 rel="noreferrer"
-                className="inline-flex items-center gap-2 rounded-xl bg-indigo-500 px-5 py-3 text-sm font-semibold text-white hover:bg-indigo-400"
-              >
-                Envoyer en DM Instagram
-              </a>
-              <a
-                href={`mailto:${CONTACT.EMAIL}`}
                 className="inline-flex items-center gap-2 rounded-xl border border-neutral-800 px-5 py-3 text-sm text-neutral-200 hover:bg-neutral-900"
               >
-                Ou par mail
+                Ou en DM Instagram
+                <Instagram className="h-4 w-4" />
               </a>
             </div>
           </form>
         </div>
 
+        {/* Bloc explicatif, tu peux garder ta version */}
         <div className="space-y-6 text-sm text-neutral-300">
-          <div className="rounded-2xl border border-neutral-800 bg-neutral-900 p-6">
-            <h3 className="mb-2 text-lg font-semibold text-white">
-              Comment ça se passe ?
-            </h3>
-            <ol className="space-y-2 text-sm">
-              <li>1. Tu m&apos;envoies ton idée + tes rushs.</li>
-              <li>2. On valide le style ensemble en DM.</li>
-              <li>3. Je te livre une version sous 48–72 h.</li>
-              <li>4. Tu demandes tes ajustements (x2 révisions).</li>
-            </ol>
-          </div>
-          <div className="rounded-2xl border border-dashed border-neutral-800 bg-neutral-900 p-6">
-            <h3 className="mb-1 flex items-center gap-2 text-white">
-              <Upload className="h-5 w-5" />
-              Upload de fichiers
-            </h3>
-            <p className="text-neutral-400">
-              Utilise Drive / Wetransfer et colle le lien dans le brief ou en DM Insta.
-            </p>
-          </div>
+          {/* ... */}
         </div>
       </div>
     </section>
   );
 }
+
 
 /* ========== FOOTER & CTA ========== */
 
@@ -879,4 +961,104 @@ function DevTests() {
     }
   }, []);
   return null;
+}
+
+function AdminBriefs() {
+  const [briefs, setBriefs] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  async function load() {
+    setLoading(true);
+    setError("");
+    const { data, error } = await supabase
+      .from("briefs")
+      .select("*")
+      .order("created_at", { ascending: false });
+
+    if (error) {
+      console.error(error);
+      setError("Erreur de chargement des briefs");
+    } else {
+      setBriefs(data || []);
+    }
+    setLoading(false);
+  }
+
+  useEffect(() => {
+    load();
+  }, []);
+
+  async function updateStatus(id: string, status: string) {
+    const { error } = await supabase
+      .from("briefs")
+      .update({ status })
+      .eq("id", id);
+
+    if (!error) {
+      setBriefs((prev) =>
+        prev.map((b) => (b.id === id ? { ...b, status } : b))
+      );
+    }
+  }
+
+  return (
+    <section className="mx-auto max-w-5xl px-4 py-10">
+      <h2 className="mb-4 text-2xl font-semibold text-white">
+        Admin — Suivi des briefs
+      </h2>
+      {loading && (
+        <p className="text-sm text-neutral-400">Chargement...</p>
+      )}
+      {error && (
+        <p className="text-sm text-red-400">{error}</p>
+      )}
+      <div className="space-y-3">
+        {briefs.map((b) => (
+          <div
+            key={b.id}
+            className="rounded-2xl border border-neutral-800 bg-neutral-900 p-4 text-sm text-neutral-200"
+          >
+            <div className="flex flex-wrap justify-between gap-2">
+              <div>
+                <p className="font-semibold">
+                  {b.name || "Sans nom"} — {b.email || "sans email"}
+                </p>
+                <p className="text-[10px] text-neutral-500">
+                  {new Date(b.created_at).toLocaleString()}
+                </p>
+              </div>
+              <select
+                value={b.status || "nouveau"}
+                onChange={(e) =>
+                  updateStatus(b.id, e.target.value)
+                }
+                className="rounded-lg bg-neutral-950 px-2 py-1 text-xs border border-neutral-700"
+              >
+                <option value="nouveau">Nouveau</option>
+                <option value="en_cours">En cours</option>
+                <option value="livré">Livré</option>
+                <option value="validé">Validé</option>
+              </select>
+            </div>
+            {b.rush_link && (
+              <p className="mt-1 text-xs text-indigo-400 break-all">
+                Rushs : {b.rush_link}
+              </p>
+            )}
+            {b.brief && (
+              <p className="mt-1 text-xs text-neutral-300 whitespace-pre-line">
+                {b.brief}
+              </p>
+            )}
+          </div>
+        ))}
+        {!loading && briefs.length === 0 && (
+          <p className="text-sm text-neutral-500">
+            Aucun brief pour l&apos;instant.
+          </p>
+        )}
+      </div>
+    </section>
+  );
 }

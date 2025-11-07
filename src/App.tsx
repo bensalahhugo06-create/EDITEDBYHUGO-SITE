@@ -1,4 +1,3 @@
-import { supabase } from "./lib/supabaseClient";
 import React, { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import {
@@ -16,6 +15,7 @@ import {
   Phone,
   Crown,
 } from "lucide-react";
+import { supabase } from "./lib/supabaseClient";
 
 const LINKS = {
   INSTAGRAM: "https://www.instagram.com/editedbyhugo_/",
@@ -27,9 +27,6 @@ const CONTACT = {
   EMAIL: "bensalahhugo06@gmail.com",
   PHONE: "06 88 32 97 30",
 };
-
-// Très important pour GitHub Pages + local
-const BASE_URL = import.meta.env.BASE_URL || "/";
 
 export default function App() {
   const [isAdmin, setIsAdmin] = useState(false);
@@ -57,7 +54,6 @@ export default function App() {
         <FAQ />
         <Blog />
         <ContactSection />
-        {/* 👇 ajoute cette ligne juste ici, avant le Footer */}
         {isAdmin && <AdminBriefs />}
       </main>
       <Footer />
@@ -66,6 +62,7 @@ export default function App() {
     </div>
   );
 }
+
 
 
 /* ========== HEADER ========== */

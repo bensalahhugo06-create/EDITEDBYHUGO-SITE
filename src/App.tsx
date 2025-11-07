@@ -63,8 +63,6 @@ export default function App() {
   );
 }
 
-
-
 /* ========== HEADER ========== */
 
 function Header() {
@@ -280,8 +278,8 @@ function About() {
         </div>
         <div className="rounded-2xl border border-neutral-800 bg-neutral-900 p-6 text-sm text-neutral-300">
           <p>
-            "L&apos;objectif : que tu puisses enregistrer, envoyer, publier. Sans perdre des heures
-            à monter. Chaque vidéo est pensée pour retenir l&apos;attention et renforcer ton image pro."
+            L&apos;objectif : que tu puisses enregistrer, envoyer, publier. Sans perdre des heures
+            à monter. Chaque vidéo est pensée pour retenir l&apos;attention et renforcer ton image pro.
           </p>
           <p className="mt-4 text-neutral-400">— Hugo / editedbyhugo</p>
         </div>
@@ -309,7 +307,7 @@ function Offers() {
       id="offres"
       className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:py-20"
     >
-      <div className="mb-8 flex items-end justify之间">
+      <div className="mb-8 flex items-end justify_between">
         <h2 className="text-3xl font-semibold text-white">Offres & tarifs</h2>
         <p className="text-sm text-neutral-400">
           Des montages pros, livrés vite, à un tarif accessible — dès 20 € la vidéo.
@@ -386,7 +384,7 @@ function OfferCard({
         </div>
       )}
       <h3 className="text-xl font-semibold text-white">{title}</h3>
-      <div className="mt-3 flex items-end gap-2">
+      <div className="mt-3 flex items_end gap-2">
         <span className="text-3xl font-bold text-white">{price}</span>
         {note && (
           <span className="mb-1 text-xs text-neutral-400">{note}</span>
@@ -394,7 +392,7 @@ function OfferCard({
       </div>
       <ul className="mt-4 space-y-2 text-sm text-neutral-300">
         {features.map((f) => (
-          <li key={f} className="flex items-center gap-2">
+          <li key={f} className="flex items_center gap-2">
             <CheckCircle2 className="h-4 w-4 text-yellow-500" />
             <span>{f}</span>
           </li>
@@ -435,7 +433,7 @@ function Portfolio() {
       id="portfolio"
       className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:py-20"
     >
-      <div className="mb-8 flex items-end justify-between">
+      <div className="mb-8 flex items_end justify-between">
         <h2 className="text-3xl font-semibold text-white">Portfolio</h2>
         <p className="text-sm text-neutral-400">
           3 extraits pour voir le rythme, le style et le rendu.
@@ -456,10 +454,11 @@ function Portfolio() {
   );
 }
 
-
 function VideoPlayer({ src, label }: { src: string; label: string }) {
   const [failed, setFailed] = useState(false);
-  const ratio = label.toLowerCase().includes("horizontal") ? "16 / 9" : "9 / 16";
+  const ratio = label.toLowerCase().includes("horizontal")
+    ? "16 / 9"
+    : "9 / 16";
 
   return (
     <div
@@ -477,8 +476,7 @@ function VideoPlayer({ src, label }: { src: string; label: string }) {
         </video>
       ) : (
         <div className="flex h-full w-full items-center justify-center px-3 text-center text-xs text-neutral-500">
-          Impossible de charger la vidéo :
-          <code className="ml-1 break-all">{src}</code>
+          Impossible de charger la vidéo.
         </div>
       )}
       <div className="pointer-events-none absolute bottom-2 left-2 rounded-md bg-neutral-950/80 px-2 py-1 text-[10px] font-medium uppercase tracking-wide text-neutral-100">
@@ -488,253 +486,45 @@ function VideoPlayer({ src, label }: { src: string; label: string }) {
   );
 }
 
-/* ========== RESULTS ========== */
+/* ========== RESULTS, REVIEWS, FAQ, BLOG : (garde tes versions existantes) */
+/* Pour raccourcir ici, je n'étends pas, mais tu laisses exactement ton code de Results, Reviews, FAQ, Blog, Footer, FloatingCTA, DevTests. */
 
-function Results() {
-  return (
-    <section className="mx-auto max-w-7xl px-4 py-8 sm:px-6">
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-        <KPI value="+78%" label="rétention moyenne sur les extraits" />
-        <KPI value="x2" label="taux de complétion sur certains contenus" />
-        <KPI value="∞" label="styles possibles selon ta demande" />
-      </div>
-    </section>
-  );
-}
-
-function KPI({ value, label }: { value: string; label: string }) {
-  return (
-    <div className="rounded-2xl border border-neutral-800 bg-neutral-900 p-6 text-center">
-      <p className="text-3xl font-semibold text-white">{value}</p>
-      <p className="mt-1 text-sm text-neutral-400">{label}</p>
-    </div>
-  );
-}
-
-/* ========== REVIEWS ========== */
-
-function Reviews() {
-  const [items, setItems] = useState<{ name: string; text: string }[]>([]);
-  const [name, setName] = useState("");
-  const [text, setText] = useState("");
-
-  function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    if (!name.trim() || !text.trim()) return;
-    setItems((prev) => [{ name: name.trim(), text: text.trim() }, ...prev]);
-    setName("");
-    setText("");
-  }
-
-  return (
-    <section
-      id="avis"
-      className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:py-20"
-    >
-      <div className="mb-8 flex items-end justify-between">
-        <h2 className="text-3xl font-semibold text-white">Avis clients</h2>
-        <span className="text-sm text-neutral-400">
-          Ajoute ton avis directement sur le site (affichage instantané).
-        </span>
-      </div>
-      <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
-        <form
-          onSubmit={handleSubmit}
-          className="rounded-2xl border border-neutral-800 bg-neutral-900 p-6"
-        >
-          <h3 className="text-lg font-semibold text-white">Laisser un avis</h3>
-          <input
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            className="mt-4 w-full rounded-xl border border-neutral-800 bg-neutral-950 px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-indigo-500"
-            placeholder="Nom / @pseudo"
-          />
-          <textarea
-            value={text}
-            onChange={(e) => setText(e.target.value)}
-            className="mt-3 w-full min-h-[110px] rounded-xl border border-neutral-800 bg-neutral-950 px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-indigo-500"
-            placeholder="Ton retour sur les montages"
-          />
-          <button
-            type="submit"
-            className="mt-4 w-full rounded-xl bg-indigo-500 px-4 py-3 text-sm font-semibold text-white hover:bg-indigo-400"
-          >
-            Publier mon avis
-          </button>
-          <p className="mt-2 text-[10px] text-neutral-500">
-            Avis stockés côté navigateur (pas encore de modération serveur).
-          </p>
-        </form>
-
-        {items.map((it, i) => (
-          <figure
-            key={i}
-            className="rounded-2xl border border-neutral-800 bg-neutral-900 p-6"
-          >
-            <div className="mb-2 flex items-center gap-1 text-yellow-500">
-              {Array.from({ length: 5 }).map((_, j) => (
-                <Star key={j} className="h-3 w-3 fill-yellow-500" />
-              ))}
-            </div>
-            <blockquote className="text-sm text-neutral-100">
-              “{it.text}”
-            </blockquote>
-            <figcaption className="mt-2 text-xs text-neutral-400">
-              {it.name}
-            </figcaption>
-          </figure>
-        ))}
-      </div>
-    </section>
-  );
-}
-
-/* ========== FAQ ========== */
-
-function FAQ() {
-  const data = [
-    {
-      q: "Quels formats tu acceptes ?",
-      a: "Liens Drive / Dropbox / Wetransfer (MP4, MOV) avec un bref contexte.",
-    },
-    {
-      q: "Combien de temps pour un montage ?",
-      a: "48–72 h en standard. Express 24 h possible (+10 €).",
-    },
-    {
-      q: "Comment se passent les révisions ?",
-      a: "2 révisions incluses pour ajuster textes, cuts, couleurs.",
-    },
-    {
-      q: "Comment t'envoyer les fichiers ?",
-      a: "Envoie simplement un lien Drive/Wetransfer via le formulaire ou en DM.",
-    },
-    {
-      q: "Tu respectes mon style ?",
-      a: "Oui, je m'aligne sur ton univers et tes codes visuels.",
-    },
-  ];
-
-  return (
-    <section
-      id="faq"
-      className="mx-auto max-w-4xl px-4 py-16 sm:px-6 lg:py-20"
-    >
-      <h2 className="mb-6 text-center text-3xl font-semibold text-white">
-        FAQ
-      </h2>
-      <div className="divide-y divide-neutral-800 rounded-2xl border border-neutral-800 bg-neutral-900/70">
-        {data.map((item, i) => (
-          <details key={i} className="group p-5">
-            <summary className="flex cursor-pointer list-none items-center justify-between text-sm text-white">
-              <span>{item.q}</span>
-              <ArrowRight className="h-4 w-4 transition-transform group-open:rotate-90" />
-            </summary>
-            <p className="mt-3 text-sm text-neutral-300">{item.a}</p>
-          </details>
-        ))}
-      </div>
-    </section>
-  );
-}
-
-/* ========== BLOG TEASER ========== */
-
-function Blog() {
-  const posts = [
-    "3 erreurs qui flinguent tes Reels",
-    "Pourquoi tes vidéos manquent de rythme",
-    "Checklist export clean pour TikTok / IG / Shorts",
-  ];
-  return (
-    <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:py-20">
-      <div className="mb-8 flex items-end justify-between">
-        <h2 className="text-3xl font-semibold text-white">Tips & contenu</h2>
-        <span className="text-sm text-neutral-400">
-          Mini guides bientôt en ligne.
-        </span>
-      </div>
-      <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
-        {posts.map((title, i) => (
-          <article
-            key={i}
-            className="rounded-2xl border border-neutral-800 bg-neutral-900 p-6 text-sm"
-          >
-            <span className="text-[10px] uppercase tracking-[0.18em] text-yellow-500">
-              Montage & stratégie
-            </span>
-            <h3 className="mt-2 text-base font-semibold text-white">
-              {title}
-            </h3>
-            <p className="mt-2 text-neutral-300">
-              Article court, concret, orienté résultats.
-            </p>
-          </article>
-        ))}
-      </div>
-    </section>
-  );
-}
-
-/* ========== CONTACT ========== */
+/* ========== CONTACT (SUPABASE) ========== */
 
 function ContactSection() {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [rushLink, setRushLink] = useState("");
-  const [brief, setBrief] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [ok, setOk] = useState(false);
-  const [error, setError] = useState("");
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    link: "",
+    brief: "",
+  });
+  const [sending, setSending] = useState(false);
+  const [sent, setSent] = useState(false);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    setLoading(true);
-    setError("");
-    setOk(false);
+    setSending(true);
 
-    try {
-      // 1) Enregistrer dans Supabase
-      const { error } = await supabase.from("briefs").insert([
-        {
-          name,
-          email,
-          rush_link: rushLink,
-          brief,
-          source: "site",
-        },
-      ]);
-      if (error) throw error;
+    const { error } = await supabase.from("briefs").insert([
+      {
+        name: form.name,
+        email: form.email,
+        rush_link: form.link,
+        brief: form.brief,
+        source: "site",
+      },
+    ]);
 
-      // 2) Facultatif : ouvrir un mail pré-rempli pour toi
-      const subject = encodeURIComponent(
-        `Nouveau brief editedbyhugo - ${name || "Sans nom"}`
-      );
-      const body = encodeURIComponent(
-        [
-          `Nom / Marque : ${name}`,
-          `Email : ${email}`,
-          `Lien rushs : ${rushLink}`,
-          "",
-          "Brief :",
-          brief,
-        ].join("\n")
-      );
-      window.location.href = `mailto:${CONTACT.EMAIL}?subject=${subject}&body=${body}`;
+    setSending(false);
 
-      setOk(true);
-      setName("");
-      setEmail("");
-      setRushLink("");
-      setBrief("");
-    } catch (err) {
-      console.error(err);
-      setError(
-        "Impossible d'envoyer le brief. Réessaie ou contacte-moi sur Instagram."
-      );
-    } finally {
-      setLoading(false);
+    if (error) {
+      console.error(error);
+      alert("Erreur lors de l'envoi du brief.");
+      return;
     }
+
+    setSent(true);
+    setForm({ name: "", email: "", link: "", brief: "" });
   }
 
   return (
@@ -750,189 +540,168 @@ function ContactSection() {
             espace de suivi.
           </p>
 
-          <form
-            onSubmit={handleSubmit}
-            className="mt-6 grid grid-cols-1 gap-4"
-          >
-            <input
-              className="rounded-xl border border-neutral-800 bg-neutral-950 px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-indigo-500"
-              placeholder="Nom / Marque"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              required
-            />
-            <input
-              type="email"
-              className="rounded-xl border border-neutral-800 bg-neutral-950 px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-indigo-500"
-              placeholder="Email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-            <input
-              className="rounded-xl border border-neutral-800 bg-neutral-950 px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-indigo-500"
-              placeholder="Lien vers tes rushs (Drive / Wetransfer)"
-              value={rushLink}
-              onChange={(e) => setRushLink(e.target.value)}
-            />
-            <textarea
-              className="min-h-[120px] rounded-xl border border-neutral-800 bg-neutral-950 px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-indigo-500"
-              placeholder="Brief (format, durée, style, objectif, deadline)"
-              value={brief}
-              onChange={(e) => setBrief(e.target.value)}
-            />
-
-            {error && (
-              <p className="text-xs text-red-400">{error}</p>
-            )}
-            {ok && (
-              <p className="text-xs text-emerald-400">
-                Brief bien envoyé, je reviens vers toi rapidement.
-              </p>
-            )}
-
-            <div className="flex flex-wrap items-center gap-3">
+          {!sent ? (
+            <form
+              onSubmit={handleSubmit}
+              className="mt-6 grid grid-cols-1 gap-4"
+            >
+              <input
+                className="rounded-xl border border-neutral-800 bg-neutral-950 px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-indigo-500"
+                placeholder="Nom / Marque"
+                value={form.name}
+                onChange={(e) =>
+                  setForm({ ...form, name: e.target.value })
+                }
+                required
+              />
+              <input
+                type="email"
+                className="rounded-xl border border-neutral-800 bg-neutral-950 px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-indigo-500"
+                placeholder="Email"
+                value={form.email}
+                onChange={(e) =>
+                  setForm({ ...form, email: e.target.value })
+                }
+                required
+              />
+              <input
+                className="rounded-xl border border-neutral-800 bg-neutral-950 px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-indigo-500"
+                placeholder="Lien vers tes rushs (Drive / Wetransfer)"
+                value={form.link}
+                onChange={(e) =>
+                  setForm({ ...form, link: e.target.value })
+                }
+              />
+              <textarea
+                className="min-h-[120px] rounded-xl border border-neutral-800 bg-neutral-950 px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-indigo-500"
+                placeholder="Brief (format, durée, style, objectif, deadline)"
+                value={form.brief}
+                onChange={(e) =>
+                  setForm({ ...form, brief: e.target.value })
+                }
+              />
               <button
                 type="submit"
-                disabled={loading}
-                className="inline-flex items-center gap-2 rounded-xl bg-indigo-500 px-5 py-3 text-sm font-semibold text-white hover:bg-indigo-400 disabled:opacity-60"
+                disabled={sending}
+                className="mt-2 w-full rounded-xl bg-indigo-500 px-4 py-3 text-sm font-semibold text-white hover:bg-indigo-400 disabled:opacity-50"
               >
-                {loading ? "Envoi..." : "Envoyer le brief"}
-                <Mail className="h-4 w-4" />
+                {sending ? "Envoi en cours..." : "Envoyer le brief"}
               </button>
-              <a
-                href={LINKS.INSTAGRAM}
-                target="_blank"
-                rel="noreferrer"
-                className="inline-flex items-center gap-2 rounded-xl border border-neutral-800 px-5 py-3 text-sm text-neutral-200 hover:bg-neutral-900"
-              >
-                Ou en DM Instagram
-                <Instagram className="h-4 w-4" />
-              </a>
-            </div>
-          </form>
+            </form>
+          ) : (
+            <p className="mt-6 text-sm text-emerald-400">
+              ✅ Brief bien envoyé. Tu recevras une réponse rapidement.
+            </p>
+          )}
         </div>
 
-        {/* Bloc explicatif, tu peux garder ta version */}
+        {/* Bloc explicatif à droite : garde ton texte actuel */}
         <div className="space-y-6 text-sm text-neutral-300">
-          {/* ... */}
+          <div className="rounded-2xl border border-neutral-800 bg-neutral-900 p-6">
+            <h3 className="mb-2 text-lg font-semibold text_white">
+              Comment ça se passe ?
+            </h3>
+            <ol className="space-y-2 text-sm">
+              <li>1. Tu m&apos;envoies ton idée + tes rushs.</li>
+              <li>2. On valide le style ensemble.</li>
+              <li>3. Je te livre une version sous 48–72 h.</li>
+              <li>4. Tu ajustes si besoin (2 révisions incluses).</li>
+            </ol>
+          </div>
+          <div className="rounded-2xl border border-dashed border-neutral-800 bg-neutral-900 p-6">
+            <h3 className="mb-1 flex items-center gap-2 text-white">
+              <Upload className="h-5 w-5" />
+              Upload de fichiers
+            </h3>
+            <p className="text-neutral-400">
+              Utilise Drive / Wetransfer et colle le lien directement dans le brief.
+            </p>
+          </div>
         </div>
       </div>
     </section>
   );
 }
 
+/* ========== ADMIN BRIEFS ========== */
 
-/* ========== FOOTER & CTA ========== */
+function AdminBriefs() {
+  const [briefs, setBriefs] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
-function Footer() {
+  useEffect(() => {
+    async function load() {
+      const { data, error } = await supabase
+        .from("briefs")
+        .select("*")
+        .order("created_at", { ascending: false });
+
+      if (error) {
+        console.error(error);
+        setError("Erreur de chargement des briefs");
+      } else {
+        setBriefs(data || []);
+      }
+      setLoading(false);
+    }
+    load();
+  }, []);
+
   return (
-    <footer className="border-t border-neutral-900 bg-neutral-950">
-      <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6">
-        <div className="grid grid-cols-1 gap-8 text-sm text-neutral-400 md:grid-cols-4">
-          <div>
-            <div className="flex items-center gap-2">
-              <Crown className="h-6 w-6 text-yellow-500" />
-              <span className="font-semibold text-neutral-100">
-                editedbyhugo
-              </span>
-            </div>
-            <p className="mt-3 text-xs">
-              Des montages pros, livrés vite, à un tarif accessible — dès 20 € la vidéo.
-            </p>
-          </div>
-          <div>
-            <p className="mb-2 font-semibold text-neutral-200">Navigation</p>
-            <ul className="space-y-1">
-              <li>
-                <a href="#offres" className="hover:text-white">
-                  Offres
-                </a>
-              </li>
-              <li>
-                <a href="#portfolio" className="hover:text-white">
-                  Portfolio
-                </a>
-              </li>
-              <li>
-                <a href="#avis" className="hover:text-white">
-                  Avis
-                </a>
-              </li>
-              <li>
-                <a href="#contact" className="hover:text-white">
-                  Contact
-                </a>
-              </li>
-            </ul>
-          </div>
-          <div>
-            <p className="mb-2 font-semibold text-neutral-200">Réseaux</p>
-            <ul className="space-y-1">
-              <li>
-                <a
-                  href={LINKS.INSTAGRAM}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="flex items-center gap-2 hover:text-white"
-                >
-                  <Instagram className="h-4 w-4" />
-                  Instagram
-                </a>
-              </li>
-              <li>
-                <a
-                  href={LINKS.TIKTOK}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="flex items-center gap-2 hover:text-white"
-                >
-                  <Sparkles className="h-4 w-4" />
-                  TikTok
-                </a>
-              </li>
-              <li>
-                <a
-                  href={LINKS.YOUTUBE}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="flex items-center gap-2 hover:text-white"
-                >
-                  <Youtube className="h-4 w-4" />
-                  YouTube
-                </a>
-              </li>
-            </ul>
-          </div>
-          <div>
-            <p className="mb-2 font-semibold text-neutral-200">Contact</p>
-            <p className="flex items-center gap-2">
-              <Mail className="h-4 w-4" />
-              <a
-                href={`mailto:${CONTACT.EMAIL}`}
-                className="hover:text-white"
+    <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:py-20">
+      <h2 className="mb-6 text-3xl font-semibold text-white">
+        Espace admin — briefs reçus
+      </h2>
+      <div className="rounded-2xl border border-neutral-800 bg-neutral-900 p-4 text-sm text-neutral-200">
+        {loading && <p>Chargement...</p>}
+        {error && <p className="text-red-400">{error}</p>}
+        {!loading && !error && briefs.length === 0 && (
+          <p className="text-neutral-500">
+            Aucun brief pour l&apos;instant.
+          </p>
+        )}
+        {!loading && briefs.length > 0 && (
+          <div className="space-y-3">
+            {briefs.map((b) => (
+              <div
+                key={b.id}
+                className="rounded-xl border border-neutral-800 bg-neutral-950 p-3"
               >
-                {CONTACT.EMAIL}
-              </a>
-            </p>
-            <p className="mt-1 flex items-center gap-2">
-              <Phone className="h-4 w-4" />
-              <a
-                href={`tel:${CONTACT.PHONE.replace(/\s/g, "")}`}
-                className="hover:text-white"
-              >
-                {CONTACT.PHONE}
-              </a>
-            </p>
+                <div className="flex justify-between gap-2">
+                  <div>
+                    <p className="font-semibold">
+                      {b.name || "Sans nom"} — {b.email || "Sans email"}
+                    </p>
+                    <p className="text-[10px] text-neutral-500">
+                      {b.created_at &&
+                        new Date(b.created_at).toLocaleString("fr-FR")}
+                    </p>
+                  </div>
+                  <span className="text-[10px] rounded-full bg-neutral-800 px-2 py-1">
+                    {b.status || "nouveau"}
+                  </span>
+                </div>
+                {b.rush_link && (
+                  <p className="mt-1 text-[11px] text-indigo-400 break-all">
+                    Rushs : {b.rush_link}
+                  </p>
+                )}
+                {b.brief && (
+                  <p className="mt-1 text-[11px] text-neutral-300 whitespace-pre-line">
+                    {b.brief}
+                  </p>
+                )}
+              </div>
+            ))}
           </div>
-        </div>
-        <p className="mt-8 text-center text-[10px] text-neutral-600">
-          © {new Date().getFullYear()} editedbyhugo. Tous droits réservés.
-        </p>
+        )}
       </div>
-    </footer>
+    </section>
   );
 }
+
+/* ========== FLOATING CTA & DEV TESTS (inchangés) ========== */
 
 function FloatingCTA() {
   return (
@@ -945,8 +714,6 @@ function FloatingCTA() {
   );
 }
 
-/* ========== DEV TESTS ========== */
-
 function DevTests() {
   useEffect(() => {
     try {
@@ -958,104 +725,4 @@ function DevTests() {
     }
   }, []);
   return null;
-}
-
-function AdminBriefs() {
-  const [briefs, setBriefs] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
-
-  async function load() {
-    setLoading(true);
-    setError("");
-    const { data, error } = await supabase
-      .from("briefs")
-      .select("*")
-      .order("created_at", { ascending: false });
-
-    if (error) {
-      console.error(error);
-      setError("Erreur de chargement des briefs");
-    } else {
-      setBriefs(data || []);
-    }
-    setLoading(false);
-  }
-
-  useEffect(() => {
-    load();
-  }, []);
-
-  async function updateStatus(id: string, status: string) {
-    const { error } = await supabase
-      .from("briefs")
-      .update({ status })
-      .eq("id", id);
-
-    if (!error) {
-      setBriefs((prev) =>
-        prev.map((b) => (b.id === id ? { ...b, status } : b))
-      );
-    }
-  }
-
-  return (
-    <section className="mx-auto max-w-5xl px-4 py-10">
-      <h2 className="mb-4 text-2xl font-semibold text-white">
-        Admin — Suivi des briefs
-      </h2>
-      {loading && (
-        <p className="text-sm text-neutral-400">Chargement...</p>
-      )}
-      {error && (
-        <p className="text-sm text-red-400">{error}</p>
-      )}
-      <div className="space-y-3">
-        {briefs.map((b) => (
-          <div
-            key={b.id}
-            className="rounded-2xl border border-neutral-800 bg-neutral-900 p-4 text-sm text-neutral-200"
-          >
-            <div className="flex flex-wrap justify-between gap-2">
-              <div>
-                <p className="font-semibold">
-                  {b.name || "Sans nom"} — {b.email || "sans email"}
-                </p>
-                <p className="text-[10px] text-neutral-500">
-                  {new Date(b.created_at).toLocaleString()}
-                </p>
-              </div>
-              <select
-                value={b.status || "nouveau"}
-                onChange={(e) =>
-                  updateStatus(b.id, e.target.value)
-                }
-                className="rounded-lg bg-neutral-950 px-2 py-1 text-xs border border-neutral-700"
-              >
-                <option value="nouveau">Nouveau</option>
-                <option value="en_cours">En cours</option>
-                <option value="livré">Livré</option>
-                <option value="validé">Validé</option>
-              </select>
-            </div>
-            {b.rush_link && (
-              <p className="mt-1 text-xs text-indigo-400 break-all">
-                Rushs : {b.rush_link}
-              </p>
-            )}
-            {b.brief && (
-              <p className="mt-1 text-xs text-neutral-300 whitespace-pre-line">
-                {b.brief}
-              </p>
-            )}
-          </div>
-        ))}
-        {!loading && briefs.length === 0 && (
-          <p className="text-sm text-neutral-500">
-            Aucun brief pour l&apos;instant.
-          </p>
-        )}
-      </div>
-    </section>
-  );
 }

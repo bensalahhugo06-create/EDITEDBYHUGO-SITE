@@ -27,6 +27,9 @@ const CONTACT = {
   PHONE: "06 88 32 97 30",
 };
 
+// Très important pour GitHub Pages + local
+const BASE_URL = import.meta.env.BASE_URL || "/";
+
 export default function App() {
   return (
     <div className="min-h-screen bg-neutral-950 text-neutral-100">
@@ -294,7 +297,7 @@ function Offers() {
       id="offres"
       className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:py-20"
     >
-      <div className="mb-8 flex items-end justify-between">
+      <div className="mb-8 flex items-end justify之间">
         <h2 className="text-3xl font-semibold text-white">Offres & tarifs</h2>
         <p className="text-sm text-neutral-400">
           Des montages pros, livrés vite, à un tarif accessible — dès 20 € la vidéo.
@@ -402,15 +405,15 @@ function OfferCard({
 function Portfolio() {
   const videos = [
     {
-      src: "public/portfolio/video-courte-style-1.mp4",
+      src: `${BASE_URL}portfolio/video-courte-style-1.mp4`,
       label: "Vidéo courte style 1 (vertical)",
     },
     {
-      src: "public/portfolio/video-courte-style-2.mp4",
+      src: `${BASE_URL}portfolio/video-courte-style-2.mp4`,
       label: "Vidéo courte style 2 (vertical)",
     },
     {
-      src: "public/portfolio/video-longue-1.mp4",
+      src: `${BASE_URL}portfolio/video-longue-1.mp4`,
       label: "Vidéo longue 1 (horizontal)",
     },
   ];
@@ -423,7 +426,7 @@ function Portfolio() {
       <div className="mb-8 flex items-end justify-between">
         <h2 className="text-3xl font-semibold text-white">Portfolio</h2>
         <p className="text-sm text-neutral-400">
-              3 extraits pour voir le rythme, le style et le rendu.
+          3 extraits pour voir le rythme, le style et le rendu.
         </p>
       </div>
 
@@ -461,8 +464,8 @@ function VideoPlayer({ src, label }: { src: string; label: string }) {
         </video>
       ) : (
         <div className="flex h-full w-full items-center justify-center px-3 text-center text-xs text-neutral-500">
-          Impossible de charger la vidéo. Vérifie que le fichier existe bien dans
-          <code className="ml-1">public{src}</code>.
+          Impossible de charger la vidéo :
+          <code className="ml-1 break-all">{src}</code>
         </div>
       )}
       <div className="pointer-events-none absolute bottom-2 left-2 rounded-md bg-neutral-950/80 px-2 py-1 text-[10px] font-medium uppercase tracking-wide text-neutral-100">
@@ -471,7 +474,6 @@ function VideoPlayer({ src, label }: { src: string; label: string }) {
     </div>
   );
 }
-
 
 /* ========== RESULTS ========== */
 
@@ -868,14 +870,8 @@ function FloatingCTA() {
 function DevTests() {
   useEffect(() => {
     try {
-      console.assert(
-        CONTACT.EMAIL.includes("@"),
-        "EMAIL invalide"
-      );
-      console.assert(
-        /^[0-9 +]+$/.test(CONTACT.PHONE),
-        "PHONE invalide"
-      );
+      console.assert(CONTACT.EMAIL.includes("@"), "EMAIL invalide");
+      console.assert(/^[0-9 +]+$/.test(CONTACT.PHONE), "PHONE invalide");
       console.log("[DevTests] liens de base OK");
     } catch (e) {
       console.warn("[DevTests] Erreur", e);

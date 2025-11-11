@@ -18,6 +18,9 @@ import {
   ArrowRightCircle,
 } from "lucide-react";
 
+import { supabase } from "./lib/supabaseClient";
+
+
 /* CONFIG SIMPLE */
 
 const LINKS = {

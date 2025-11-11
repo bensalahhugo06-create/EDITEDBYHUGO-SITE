@@ -388,7 +388,7 @@ const videos = [
       <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
         <h2 className="text-3xl font-semibold text-white">Portfolio</h2>
         <p className="text-sm text-neutral-400">
-          Extraits réels : rythme, découpe, sous-titres, lisibilité.
+          Extraits : rythme, découpe, sous-titres, lisibilité.
         </p>
       </div>
 

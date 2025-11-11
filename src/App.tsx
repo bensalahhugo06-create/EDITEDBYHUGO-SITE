@@ -21,8 +21,7 @@ import {
 const LINKS = {
   INSTAGRAM: "https://www.instagram.com/editedbyhugo_/",
   TIKTOK: "https://www.tiktok.com/@hugo.monteur.video",
-  YOUTUBE:
-    "https://www.youtube.com/@hugo.monteur.vid%C3%A9o",
+  YOUTUBE: "https://www.youtube.com/@hugo.monteur.vid%C3%A9o",
 };
 
 /* CONTACT */
@@ -222,7 +221,7 @@ function SmallStat({ label, value }: { label: string; value: string }) {
   );
 }
 
-/* TRUST BAR (sans remboursement) */
+/* TRUST BAR */
 
 function TrustBar() {
   return (
@@ -275,7 +274,7 @@ function About() {
             </li>
             <li className="flex gap-2">
               <CheckCircle2 className="mt-0.5 h-4 w-4 text-yellow-500" />
-              Communication directe, pas d&apos;intermédiaire, pas de losing time.
+              Communication directe, sans intermédiaire.
             </li>
           </ul>
         </div>
@@ -292,7 +291,7 @@ function About() {
   );
 }
 
-/* OFFRES (SUR MESURE, CTA INSTAGRAM) */
+/* OFFRES */
 
 function Offers() {
   return (
@@ -303,8 +302,8 @@ function Offers() {
       <div className="mb-8 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
         <h2 className="text-3xl font-semibold text-white">Offres</h2>
         <p className="text-sm text-neutral-400">
-          Vidéo unique, pack multi-contenus ou abonnement mensuel : tout est
-          construit sur mesure selon ton volume et tes objectifs.
+          Vidéo unique, pack multi-contenus ou abonnement mensuel : construit
+          sur mesure selon ton volume et tes objectifs.
         </p>
       </div>
 
@@ -371,22 +370,20 @@ function OfferCard({
   );
 }
 
-/* PORTFOLIO : 3 VIDÉOS (PUBLIC/PORTFOLIO) */
+/* PORTFOLIO : VIDÉOS */
 
 function Portfolio() {
-  const base = import.meta.env.BASE_URL || "/";
-
   const videos = [
     {
-      src: `${base}portfolio/video-courte-style-1.mp4`,
+      src: "/portfolio/video-courte-style-1.mp4",
       label: "Format court • Style 1",
     },
     {
-      src: `${base}portfolio/video-courte-style-2.mp4`,
+      src: "/portfolio/video-courte-style-2.mp4",
       label: "Format court • Style 2",
     },
     {
-      src: `${base}portfolio/video-longue-1.mp4`,
+      src: "/portfolio/video-longue-1.mp4",
       label: "Format long • Highlight",
     },
   ];
@@ -399,8 +396,7 @@ function Portfolio() {
       <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
         <h2 className="text-3xl font-semibold text-white">Portfolio</h2>
         <p className="text-sm text-neutral-400">
-          Extraits réels : rythme, découpe, sous-titres, lisibilité. Ce que tes
-          vidéos peuvent donner.
+          Extraits réels : rythme, découpe, sous-titres, lisibilité.
         </p>
       </div>
 
@@ -453,11 +449,10 @@ function Results() {
           les 3 premières secondes.
         </ResultCard>
         <ResultCard title="Aligné à ton branding">
-          Couleurs, typo, ton et rythme adaptés à ton univers, pas un template
-          générique.
+          Couleurs, typo, ton et rythme adaptés à ton univers.
         </ResultCard>
         <ResultCard title="Orienté résultat">
-          Contenus pensés pour vendre, booker, engager, pas juste être “jolis”.
+          Contenus pensés pour vendre, booker, engager, pas juste être jolis.
         </ResultCard>
       </div>
     </section>
@@ -481,7 +476,7 @@ function ResultCard({
   );
 }
 
-/* AVIS STATIQUES (PAS DE FORM QUI PLANTE) */
+/* AVIS */
 
 function Reviews() {
   const testimonials = [
@@ -524,24 +519,18 @@ function Reviews() {
                 <Star key={j} className="h-3 w-3 fill-yellow-500" />
               ))}
             </div>
-            <blockquote className="text-neutral-100">
-              “{t.text}”
-            </blockquote>
+            <blockquote className="text-neutral-100">“{t.text}”</blockquote>
             <figcaption className="mt-2 text-xs text-neutral-400">
               {t.name}
             </figcaption>
           </figure>
         ))}
       </div>
-
-      <p className="mt-4 text-xs text-neutral-500">
-        Retours détaillés et preuves sociales visibles en story à la une sur Instagram.
-      </p>
     </section>
   );
 }
 
-/* FAQ : ACCORDÉON */
+/* FAQ */
 
 function FAQ() {
   const items = [
@@ -559,7 +548,7 @@ function FAQ() {
     },
     {
       q: "Comment j'envoie mes rushs ?",
-      a: "Via Drive ou Wetransfer, lien partagé en DM ou par mail. Simple et sécurisé.",
+      a: "Via Drive ou Wetransfer, lien partagé en DM ou par mail.",
     },
     {
       q: "Tu respectes mon style ?",
@@ -607,7 +596,7 @@ function FAQ() {
   );
 }
 
-/* CONTACT : DM / MAIL / TEL */
+/* CONTACT */
 
 function ContactSection() {
   return (
@@ -673,7 +662,7 @@ function ContactSection() {
   );
 }
 
-/* FOOTER + CTA FLOTTANT */
+/* FOOTER */
 
 function Footer() {
   return (
@@ -713,6 +702,8 @@ function Footer() {
     </footer>
   );
 }
+
+/* CTA FLOTTANT */
 
 function FloatingCTA() {
   return (

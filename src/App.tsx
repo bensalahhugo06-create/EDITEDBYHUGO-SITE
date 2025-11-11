@@ -16,7 +16,7 @@ import {
   ArrowRightCircle,
 } from "lucide-react";
 
-/* CONFIG LIENS */
+/* ========== CONFIG LIENS ========== */
 
 const LINKS = {
   INSTAGRAM: "https://www.instagram.com/editedbyhugo_/",
@@ -24,7 +24,7 @@ const LINKS = {
   YOUTUBE: "https://www.youtube.com/@hugo.monteur.vid%C3%A9o",
 };
 
-/* CONTACT */
+/* ========== CONTACT ========== */
 
 const CONTACT = {
   EMAIL: "bensalahhugo06@gmail.com",
@@ -52,7 +52,7 @@ export default function App() {
   );
 }
 
-/* HEADER */
+/* ========== HEADER ========== */
 
 function Header() {
   return (
@@ -108,7 +108,7 @@ function Header() {
   );
 }
 
-/* HERO */
+/* ========== HERO ========== */
 
 function Hero() {
   const gradientTitle = useMemo(
@@ -221,7 +221,7 @@ function SmallStat({ label, value }: { label: string; value: string }) {
   );
 }
 
-/* TRUST BAR */
+/* ========== TRUST BAR ========== */
 
 function TrustBar() {
   return (
@@ -248,7 +248,7 @@ function TrustBar() {
   );
 }
 
-/* ABOUT */
+/* ========== ABOUT ========== */
 
 function About() {
   return (
@@ -281,8 +281,8 @@ function About() {
         <div className="rounded-2xl border border-neutral-800 bg-neutral-900 p-6 text-sm text-neutral-300">
           <p>
             Objectif : te libérer du montage. Tu crées, tu vends, tu poses ton
-            image. Je m&apos;assure que chaque vidéo renforce ton branding et
-            donne envie de rester jusqu&apos;à la fin.
+            image. Chaque vidéo renforce ton branding et donne envie de rester
+            jusqu&apos;à la fin.
           </p>
           <p className="mt-4 text-neutral-400">— Hugo / editedbyhugo</p>
         </div>
@@ -291,7 +291,7 @@ function About() {
   );
 }
 
-/* OFFRES */
+/* ========== OFFRES ========== */
 
 function Offers() {
   return (
@@ -315,11 +315,11 @@ function Offers() {
         <OfferCard
           title="Pack 3 vidéos"
           badge="Recommandé"
-          description="3 vidéos cohérentes pour installer ton message, nourrir ton audience et analyser ce qui performe."
+          description="3 vidéos cohérentes pour installer ton message et nourrir ton audience."
         />
         <OfferCard
           title="Abonnement mensuel"
-          description="Pour les créateurs réguliers : volume défini ensemble, priorité planning et accompagnement continu."
+          description="Pour les créateurs réguliers : volume défini ensemble, priorité planning, suivi continu."
         />
       </div>
     </section>
@@ -370,33 +370,41 @@ function OfferCard({
   );
 }
 
-/* PORTFOLIO : VIDÉOS */
+/* ========== PORTFOLIO ========== */
 
 function Portfolio() {
-const videos = [
-  { src: "/portfolio/video-courte-style-1.mp4", label: "Vidéo courte style 1 (vertical)" },
-  { src: "/portfolio/video-courte-style-2.mp4", label: "Vidéo courte style 2 (vertical)" },
-  { src: "/portfolio/video-longue-1.mp4", label: "Vidéo longue 1 (horizontal)" },
-];
-
+  const videos = [
+    {
+      src: "/portfolio/video-courte-style-1.mp4",
+      label: "Format court • Style 1",
+    },
+    {
+      src: "/portfolio/video-courte-style-2.mp4",
+      label: "Format court • Style 2",
+    },
+    {
+      src: "/portfolio/video-longue-1.mp4",
+      label: "Format long • Highlight",
+    },
+  ];
 
   return (
     <section
       id="portfolio"
       className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:py-20"
     >
-      <div className="mb-8 flex items-end justify-between">
+      <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
         <h2 className="text-3xl font-semibold text-white">Portfolio</h2>
         <p className="text-sm text-neutral-400">
-          3 extraits pour voir le rythme, le style et le rendu.
+          Extraits réels : rythme, découpe, sous-titres, lisibilité.
         </p>
       </div>
 
-      <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+      <div className="mt-6 grid gap-6 md:grid-cols-3">
         {videos.map((v, i) => (
           <div
             key={i}
-            className="rounded-2xl border border-neutral-800 bg-neutral-900 p-3"
+            className="rounded-2xl border border-neutral-800 bg-neutral-900/90 p-3"
           >
             <VideoPlayer src={v.src} label={v.label} />
           </div>
@@ -406,16 +414,39 @@ const videos = [
   );
 }
 
+function VideoPlayer({ src, label }: { src: string; label: string }) {
+  const isLong = label.toLowerCase().includes("long");
+  const ratio = isLong ? "16 / 9" : "9 / 16";
 
-/* RÉSULTATS */
+  return (
+    <div
+      className="relative w-full overflow-hidden rounded-xl bg-black"
+      style={{ aspectRatio: ratio }}
+    >
+      <video
+        controls
+        playsInline
+        className="h-full w-full object-contain"
+        preload="metadata"
+      >
+        <source src={src} type="video/mp4" />
+      </video>
+      <div className="pointer-events-none absolute bottom-2 left-2 rounded-md bg-neutral-950/80 px-2 py-1 text-[10px] font-medium uppercase tracking-wide text-neutral-100">
+        {label}
+      </div>
+    </div>
+  );
+}
+
+/* ========== RÉSULTATS ========== */
 
 function Results() {
   return (
     <section className="mx-auto max-w-7xl px-4 py-8 sm:px-6">
       <div className="grid grid-cols-1 gap-4 md:grid-cols-3 text-sm text-neutral-300">
         <ResultCard title="Focus attention">
-          Hooks rapides, cuts propres, lisible sans son, pensé pour retenir sur
-          les 3 premières secondes.
+          Hooks rapides, cuts propres, lisible sans son, pensé pour accrocher dès
+          les premières secondes.
         </ResultCard>
         <ResultCard title="Aligné à ton branding">
           Couleurs, typo, ton et rythme adaptés à ton univers.
@@ -445,12 +476,12 @@ function ResultCard({
   );
 }
 
-/* AVIS */
+/* ========== AVIS ========== */
 
 function Reviews() {
   const testimonials = [
     {
-      name: "@coachélite",
+      name: "@coachelite",
       text:
         "Montage propre, rapide, exactement dans mon branding. On a pu lancer plusieurs contenus sans friction.",
     },
@@ -499,21 +530,21 @@ function Reviews() {
   );
 }
 
-/* FAQ */
+/* ========== FAQ ========== */
 
 function FAQ() {
   const items = [
     {
       q: "Comment on commence ?",
-      a: "Tu m'écris en DM sur Instagram (@editedbyhugo_). On cale ton objectif, ton style, ton volume et le délai.",
+      a: "DM sur Instagram (@editedbyhugo_) avec ton projet, ton style et ton volume. On cale tout avant de lancer.",
     },
     {
       q: "Quels formats tu gères ?",
-      a: "Reels, TikTok, YouTube Shorts, formats horizontaux, carrés, avec ou sans sous-titres intégrés.",
+      a: "Reels, TikTok, YouTube Shorts, formats horizontaux/carrés, avec ou sans sous-titres intégrés.",
     },
     {
       q: "Tu proposes l'express 24 h ?",
-      a: "Oui, selon la charge. On valide ça ensemble avant d'accepter le projet.",
+      a: "Oui, selon la charge. On valide ensemble avant.",
     },
     {
       q: "Comment j'envoie mes rushs ?",
@@ -521,7 +552,7 @@ function FAQ() {
     },
     {
       q: "Tu respectes mon style ?",
-      a: "Toujours. Tu m'envoies des exemples, on fixe les codes visuels et on s'y tient.",
+      a: "Toujours. On définit les codes visuels ensemble et on les applique.",
     },
   ];
 
@@ -565,7 +596,7 @@ function FAQ() {
   );
 }
 
-/* CONTACT */
+/* ========== CONTACT ========== */
 
 function ContactSection() {
   return (
@@ -579,8 +610,8 @@ function ContactSection() {
             Discuter d&apos;un montage ou d&apos;un pack
           </h2>
           <p className="text-neutral-300 mb-4">
-            Tout se passe en direct avec moi. Tu m&apos;écris, on clarifie ton besoin,
-            on cale le rythme de production et on lance.
+            Tout se passe en direct avec moi : on clarifie ton besoin, ton style,
+            ton volume et le rythme de production.
           </p>
           <a
             href={LINKS.INSTAGRAM}
@@ -631,7 +662,7 @@ function ContactSection() {
   );
 }
 
-/* FOOTER */
+/* ========== FOOTER ========== */
 
 function Footer() {
   return (
@@ -672,7 +703,7 @@ function Footer() {
   );
 }
 
-/* CTA FLOTTANT */
+/* ========== CTA FLOTTANT ========== */
 
 function FloatingCTA() {
   return (

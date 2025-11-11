@@ -372,7 +372,7 @@ function OfferCard({
 
 /* PORTFOLIO : VIDÉOS */
 
-ffunction Portfolio() {
+function Portfolio() {
   const videos = [
     {
       src: "/portfolio/Video-courte-style-1.mp4",

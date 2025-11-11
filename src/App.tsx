@@ -415,15 +415,15 @@ function VideoPlayer({ src, label }: { src: string; label: string }) {
       className="relative w-full overflow-hidden rounded-xl bg-black"
       style={{ aspectRatio: ratio }}
     >
-<video
-  src={src}
-  controls
-  playsInline
-  preload="metadata"
-  poster="/portfolio/preview-video-1.jpg" // par exemple
-  className="h-full w-full object-contain"
-/>
-
+      <video
+        src={src}
+        className="h-full w-full object-contain"
+        playsInline
+        muted
+        loop
+        autoPlay
+        preload="metadata"
+      />
       <div className="pointer-events-none absolute bottom-2 left-2 rounded-md bg-neutral-950/80 px-2 py-1 text-[10px] font-medium uppercase tracking-wide text-neutral-100">
         {label}
       </div>

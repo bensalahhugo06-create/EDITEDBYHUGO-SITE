@@ -1,3 +1,13 @@
+import video1 from "./assets/portfolio/video-courte-style-1.mp4";
+import video2 from "./assets/portfolio/video-courte-style-2.mp4";
+import video3 from "./assets/portfolio/video-longue-1.mp4";
+
+const videos = [
+  { src: video1, label: "Format court • Style 1" },
+  { src: video2, label: "Format court • Style 2" },
+  { src: video3, label: "Format long • Highlight" },
+];
+
 import React, { useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import {

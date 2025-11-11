@@ -386,9 +386,9 @@ function Portfolio() {
       src: "/portfolio/video-courte-style-2.mp4",
       label: "Format court • Style 2",
     },
-    {
+    {©
       src: "/portfolio/video-longue-1.mp4",
-      label: "Format long • Highlight",
+      label: "Format long",
     },
   ];
 
@@ -484,17 +484,71 @@ function ResultCard({
 /* AVIS (local, pas de BDD) */
 
 function Reviews() {
-  const [items, setItems] = useState<{ name: string; text: string }[]>([]);
-  const [name, setName] = useState("");
-  const [text, setText] = useState("");
+  const [reviews, setReviews] = useState<
+    { id: number; name: string; message: string; created_at: string }[]
+  >([]);
+  const [loading, setLoading] = useState(true);
+  const [form, setForm] = useState({ name: "", message: "" });
+  const [submitting, setSubmitting] = useState(false);
 
-  function handleSubmit(e: React.FormEvent) {
+  // Récupérer les avis au chargement
+  React.useEffect(() => {
+    const fetchReviews = async () => {
+      const { data, error } = await supabase
+        .from("reviews")
+        .select("*")
+        .order("created_at", { ascending: false });
+
+      if (!error && data) {
+        setReviews(
+          data.map((r: any) => ({
+            id: r.id,
+            name: r.name,
+            message: r.message,
+            created_at: r.created_at,
+          }))
+        );
+      }
+      setLoading(false);
+    };
+
+    fetchReviews();
+  }, []);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!name.trim() || !text.trim()) return;
-    setItems((prev) => [{ name: name.trim(), text: text.trim() }, ...prev]);
-    setName("");
-    setText("");
-  }
+    if (!form.name.trim() || !form.message.trim()) return;
+
+    setSubmitting(true);
+
+    const { data, error } = await supabase
+      .from("reviews")
+      .insert({
+        name: form.name.trim(),
+        message: form.message.trim(),
+      })
+      .select()
+      .single();
+
+    setSubmitting(false);
+
+    if (error || !data) {
+      console.error(error);
+      alert("Impossible d'enregistrer ton avis. Réessaie plus tard.");
+      return;
+    }
+
+    setReviews((prev) => [
+      {
+        id: data.id,
+        name: data.name,
+        message: data.message,
+        created_at: data.created_at,
+      },
+      ...prev,
+    ]);
+    setForm({ name: "", message: "" });
+  };
 
   return (
     <section
@@ -503,55 +557,83 @@ function Reviews() {
     >
       <div className="mb-8 flex items-end justify-between">
         <h2 className="text-3xl font-semibold text-white">Avis clients</h2>
-        <span className="text-sm text-neutral-400">
-          Démo : tu pourras intégrer de vrais avis une fois reçus.
-        </span>
       </div>
 
-      <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-[1.6fr,1.4fr]">
+        {/* Liste des avis */}
+        <div className="space-y-3">
+          {loading && (
+            <p className="text-sm text-neutral-500">
+              Chargement des avis...
+            </p>
+          )}
+
+          {!loading && reviews.length === 0 && (
+            <p className="text-sm text-neutral-500">
+              Aucun avis publié pour l&apos;instant. Tu peux être le premier.
+            </p>
+          )}
+
+          {reviews.map((r) => (
+            <figure
+              key={r.id}
+              className="rounded-2xl border border-neutral-800 bg-neutral-900 p-5 text-sm"
+            >
+              <div className="flex items-center justify-between gap-2 mb-1">
+                <div className="flex items-center gap-2">
+                  <Star className="h-4 w-4 text-yellow-500" />
+                  <span className="font-semibold text-white">
+                    {r.name}
+                  </span>
+                </div>
+                <span className="text-[10px] text-neutral-500">
+                  {new Date(r.created_at).toLocaleDateString("fr-FR")}
+                </span>
+              </div>
+              <p className="mt-1 text-neutral-300 whitespace-pre-line">
+                {r.message}
+              </p>
+            </figure>
+          ))}
+        </div>
+
+        {/* Formulaire avis */}
         <form
           onSubmit={handleSubmit}
           className="rounded-2xl border border-neutral-800 bg-neutral-900 p-6 text-sm"
         >
-          <h3 className="text-lg font-semibold text-white">
-            Laisser un avis (local)
+          <h3 className="text-lg font-semibold text-white mb-1">
+            Laisser un avis
           </h3>
+          <p className="text-xs text-neutral-500 mb-3">
+            Ton avis s&apos;affichera directement sur cette page.
+          </p>
           <input
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            className="mt-4 w-full rounded-xl border border-neutral-800 bg-neutral-950 px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-indigo-500"
-            placeholder="Nom / @pseudo"
+            value={form.name}
+            onChange={(e) =>
+              setForm((f) => ({ ...f, name: e.target.value }))
+            }
+            className="w-full rounded-xl border border-neutral-800 bg-neutral-950 px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-indigo-500"
+            placeholder="Ton pseudo / @"
+            required
           />
           <textarea
-            value={text}
-            onChange={(e) => setText(e.target.value)}
-            className="mt-3 w-full min-h-[90px] rounded-xl border border-neutral-800 bg-neutral-950 px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-indigo-500"
-            placeholder="Ton retour (non sauvegardé en ligne ici)"
+            value={form.message}
+            onChange={(e) =>
+              setForm((f) => ({ ...f, message: e.target.value }))
+            }
+            className="mt-3 w-full min-h-[100px] rounded-xl border border-neutral-800 bg-neutral-950 px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-indigo-500"
+            placeholder="Ton retour sur le montage, la com', la qualité..."
+            required
           />
           <button
             type="submit"
-            className="mt-4 w-full rounded-xl bg-indigo-500 px-4 py-3 text-sm font-semibold text-white hover:bg-indigo-400"
+            disabled={submitting}
+            className="mt-4 w-full rounded-xl bg-indigo-500 px-4 py-3 text-sm font-semibold text-white hover:bg-indigo-400 disabled:opacity-50"
           >
-            Voir le rendu d&apos;un avis
+            {submitting ? "Envoi..." : "Publier mon avis"}
           </button>
         </form>
-
-        {items.map((it, i) => (
-          <figure
-            key={i}
-            className="rounded-2xl border border-neutral-800 bg-neutral-900 p-6 text-sm"
-          >
-            <div className="mb-1 flex items-center gap-1 text-yellow-500">
-              {Array.from({ length: 5 }).map((_, j) => (
-                <Star key={j} className="h-3 w-3 fill-yellow-500" />
-              ))}
-            </div>
-            <blockquote className="text-neutral-100">“{it.text}”</blockquote>
-            <figcaption className="mt-2 text-xs text-neutral-400">
-              {it.name}
-            </figcaption>
-          </figure>
-        ))}
       </div>
     </section>
   );

@@ -386,7 +386,7 @@ function Portfolio() {
       src: "/portfolio/video-courte-style-2.mp4",
       label: "Format court • Style 2",
     },
-    {©
+    {
       src: "/portfolio/video-longue-1.mp4",
       label: "Format long",
     },

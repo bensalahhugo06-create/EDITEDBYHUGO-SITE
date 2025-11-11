@@ -409,27 +409,43 @@ const videos = [
 function VideoPlayer({ src, label }: { src: string; label: string }) {
   const isLong = label.toLowerCase().includes("long");
   const ratio = isLong ? "16 / 9" : "9 / 16";
+  const [error, setError] = useState(false);
 
   return (
     <div
       className="relative w-full overflow-hidden rounded-xl bg-black"
       style={{ aspectRatio: ratio }}
     >
-      <video
-        src={src}
-        className="h-full w-full object-contain"
-        playsInline
-        muted
-        loop
-        autoPlay
-        preload="metadata"
-      />
+      {!error ? (
+        <video
+          key={src}
+          src={src}
+          controls
+          playsInline
+          muted
+          loop
+          autoPlay
+          preload="metadata"
+          className="h-full w-full object-contain"
+          onError={() => {
+            console.error("Erreur vidéo:", src);
+            setError(true);
+          }}
+        />
+      ) : (
+        <div className="flex h-full w-full items-center justify-center px-3 text-center text-xs text-neutral-400">
+          Impossible de charger la vidéo&nbsp;
+          <span className="font-mono text-[10px] text-neutral-500">{src}</span>
+        </div>
+      )}
+
       <div className="pointer-events-none absolute bottom-2 left-2 rounded-md bg-neutral-950/80 px-2 py-1 text-[10px] font-medium uppercase tracking-wide text-neutral-100">
         {label}
       </div>
     </div>
   );
 }
+
 
 /* ========== RÉSULTATS ========== */
 

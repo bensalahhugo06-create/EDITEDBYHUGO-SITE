@@ -373,20 +373,12 @@ function OfferCard({
 /* ========== PORTFOLIO ========== */
 
 function Portfolio() {
-  const videos = [
-    {
-      src: "/portfolio/video-courte-style-1.mp4",
-      label: "Format court • Style 1",
-    },
-    {
-      src: "/portfolio/video-courte-style-2.mp4",
-      label: "Format court • Style 2",
-    },
-    {
-      src: "/portfolio/video-longue-1.mp4",
-      label: "Format long • Highlight",
-    },
-  ];
+const videos = [
+  { src: "/portfolio/video-courte-style-1.mp4", label: "Format court • Style 1" },
+  { src: "/portfolio/video-courte-style-2.mp4", label: "Format court • Style 2" },
+  { src: "/portfolio/video-longue-1.mp4",       label: "Format long • Highlight" },
+];
+
 
   return (
     <section
@@ -424,19 +416,19 @@ function VideoPlayer({ src, label }: { src: string; label: string }) {
       style={{ aspectRatio: ratio }}
     >
       <video
+        src={src}
         controls
         playsInline
-        className="h-full w-full object-contain"
         preload="metadata"
-      >
-        <source src={src} type="video/mp4" />
-      </video>
+        className="h-full w-full object-contain"
+      />
       <div className="pointer-events-none absolute bottom-2 left-2 rounded-md bg-neutral-950/80 px-2 py-1 text-[10px] font-medium uppercase tracking-wide text-neutral-100">
         {label}
       </div>
     </div>
   );
 }
+
 
 /* ========== RÉSULTATS ========== */
 

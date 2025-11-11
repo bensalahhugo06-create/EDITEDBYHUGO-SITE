@@ -428,6 +428,7 @@ function VideoPlayer({ src, label }: { src: string; label: string }) {
         playsInline
         className="h-full w-full object-contain"
         preload="metadata"
+        onError={() => console.error("Erreur de chargement vidéo :", src)}
       >
         <source src={src} type="video/mp4" />
       </video>
@@ -437,6 +438,7 @@ function VideoPlayer({ src, label }: { src: string; label: string }) {
     </div>
   );
 }
+
 
 /* RÉSULTATS */
 

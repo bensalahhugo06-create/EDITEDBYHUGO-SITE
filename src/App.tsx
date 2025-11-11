@@ -1,13 +1,3 @@
-import video1 from "./assets/portfolio/video-courte-style-1.mp4";
-import video2 from "./assets/portfolio/video-courte-style-2.mp4";
-import video3 from "./assets/portfolio/video-longue-1.mp4";
-
-const videos = [
-  { src: video1, label: "Format court • Style 1" },
-  { src: video2, label: "Format court • Style 2" },
-  { src: video3, label: "Format long • Highlight" },
-];
-
 import React, { useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import {
@@ -382,19 +372,19 @@ function OfferCard({
 
 /* PORTFOLIO : VIDÉOS */
 
-function Portfolio() {
+ffunction Portfolio() {
   const videos = [
     {
-      src: "/portfolio/video-courte-style-1.mp4",
-      label: "Format court • Style 1",
+      src: "/portfolio/Video-courte-style-1.mp4",
+      label: "Vidéo courte style 1 (vertical)",
     },
     {
-      src: "/portfolio/video-courte-style-2.mp4",
-      label: "Format court • Style 2",
+      src: "/portfolio/Video-courte-style-2.mp4",
+      label: "Vidéo courte style 2 (vertical)",
     },
     {
-      src: "/portfolio/video-longue-1.mp4",
-      label: "Format long • Highlight",
+      src: "/portfolio/Video-longue-1.mp4",
+      label: "Vidéo longue 1 (horizontal)",
     },
   ];
 
@@ -403,49 +393,24 @@ function Portfolio() {
       id="portfolio"
       className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:py-20"
     >
-      <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+      <div className="mb-8 flex items-end justify-between">
         <h2 className="text-3xl font-semibold text-white">Portfolio</h2>
         <p className="text-sm text-neutral-400">
-          Extraits réels : rythme, découpe, sous-titres, lisibilité.
+          3 extraits pour voir le rythme, le style et le rendu.
         </p>
       </div>
 
-      <div className="mt-6 grid gap-6 md:grid-cols-3">
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
         {videos.map((v, i) => (
           <div
             key={i}
-            className="rounded-2xl border border-neutral-800 bg-neutral-900/90 p-3"
+            className="rounded-2xl border border-neutral-800 bg-neutral-900 p-3"
           >
             <VideoPlayer src={v.src} label={v.label} />
           </div>
         ))}
       </div>
     </section>
-  );
-}
-
-function VideoPlayer({ src, label }: { src: string; label: string }) {
-  const isLong = label.toLowerCase().includes("long");
-  const ratio = isLong ? "16 / 9" : "9 / 16";
-
-  return (
-    <div
-      className="relative w-full overflow-hidden rounded-xl bg-black"
-      style={{ aspectRatio: ratio }}
-    >
-      <video
-        controls
-        playsInline
-        className="h-full w-full object-contain"
-        preload="metadata"
-        onError={() => console.error("Erreur de chargement vidéo :", src)}
-      >
-        <source src={src} type="video/mp4" />
-      </video>
-      <div className="pointer-events-none absolute bottom-2 left-2 rounded-md bg-neutral-950/80 px-2 py-1 text-[10px] font-medium uppercase tracking-wide text-neutral-100">
-        {label}
-      </div>
-    </div>
   );
 }
 
